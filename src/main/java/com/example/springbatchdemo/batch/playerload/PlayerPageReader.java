@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoField;
+import java.util.Optional;
 
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
@@ -34,11 +35,19 @@ public class PlayerPageReader extends AbstractItemStreamItemReader<PlayerPages> 
             throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
         final long totalPagesFromContext = jobExecutionContextHolder.getExecutionContext().getLong("TOTALPAGES", -1);
         if (totalPagesFromContext == -1) {
-            final ZonedDateTime localDate = jobParamsHolder.getJobParams().getLocalDate("queryDate",
-                    LocalDate.now()).atStartOfDay(ZoneId.systemDefault());
-            log.info("localDate is {}", localDate);
+            final ZonedDateTime queryDate = Optional.ofNullable(jobParamsHolder.getJobParams().getString("queryDate"))
+                    .map(qd -> {
+                        try {
+                            return LocalDate.parse(qd);
+                        } catch (Exception e) {
+                            return LocalDate.now();
+                        }
+                    })
+                    .orElse(LocalDate.now())
+                    .atStartOfDay(ZoneId.systemDefault());
+            log.info("queryDate is {}", queryDate);
 
-            final long queryDateSecondsSinceEpoch = localDate
+            final long queryDateSecondsSinceEpoch = queryDate
                     .getLong(ChronoField.INSTANT_SECONDS);
 
             final PlayerPages playerPages = playerClient.getPlayerPages(

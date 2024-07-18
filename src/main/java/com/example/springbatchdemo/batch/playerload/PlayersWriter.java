@@ -4,6 +4,7 @@ import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
 import org.springframework.batch.item.support.AbstractItemStreamItemWriter;
+import org.springframework.boot.autoconfigure.batch.JobLauncherApplicationRunner;
 import org.springframework.stereotype.Service;
 
 import com.example.springbatchdemo.entity.PlayerE;
@@ -24,6 +25,8 @@ public class PlayersWriter extends AbstractItemStreamItemWriter<PlayerE> {
 
     @Override
     public void write(Chunk<? extends PlayerE> chunk) throws Exception {
+
+        JobLauncherApplicationRunner aka;
         final long pagesCompletedFromContext = executionContext.getLong(getExecutionContextKey("PAGESCOMPLETED"), 0);
         executionContext.putLong(getExecutionContextKey("PAGESCOMPLETED"), pagesCompletedFromContext + 1);
     }
