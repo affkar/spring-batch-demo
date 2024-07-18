@@ -1,0 +1,67 @@
+databaseChangeLog:
+- preConditions:
+    - runningAs:
+        username:  SA
+- changeSet:
+      id:  "player-create"
+      author:  karthick
+      labels: example-label
+      context: example-context
+      comment: example-comment
+      changes:
+       - createTable:
+            tableName:  player
+            columns:
+              - column:
+                  name:  id
+                  type:  int
+                  autoIncrement:  true
+                  constraints:
+                    primaryKey:  true
+                    nullable:  false
+              - column:
+                  name:  name
+                  type:  varchar(50)
+                  constraints:
+                    nullable:  false
+- changeSet:
+      id:  "player-characteristic-create"
+      author:  karthick
+      labels: example-label
+      context: example-context
+      comment: example-comment
+      changes:
+        - createTable:
+            tableName:  player_characteristic
+            columns:
+              - column:
+                  name:  id
+                  type:  int
+                  constraints:
+                    nullable:  false
+                    foreignKeyName: player_characteristic_FK_player
+                    references: player(id)
+              - column:
+                  name:  characteristic_id
+                  type:  int
+                  constraints:
+                    nullable:  false
+                    foreignKeyName: player_characteristic_FK_characteristic
+                    references: characteristic(id)
+              - column:
+                  name:  value
+                  type:  float
+                  constraints:
+                    nullable:  false
+- changeSet:
+      id: "player-characteristic-pk-create"
+      author:  karthick
+      labels: example-label
+      context: example-context
+      comment: example-comment
+      changes:
+        - addPrimaryKey:
+            constraintName: player_characteristic_pk
+            tableName: player_characteristic
+            columnNames: id, characteristic_id      
+            

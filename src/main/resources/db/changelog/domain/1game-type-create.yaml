@@ -1,0 +1,87 @@
+databaseChangeLog:
+  - changeSet:
+      id:  "characteristic-create"
+      author:  karthick
+      labels: example-label
+      context: example-context
+      comment: example-comment
+      changes:
+      - createTable:
+            tableName:  characteristic
+            columns:
+              - column:
+                  name:  id
+                  type:  int
+                  autoIncrement:  true
+                  constraints:
+                    primaryKey:  true
+                    nullable:  false
+              - column:
+                  name:  type
+                  type:  varchar(50)
+                  constraints:
+                    nullable:  false
+  - changeSet:
+      id:  "location-create"
+      author:  karthick
+      labels: example-label
+      context: example-context
+      comment: example-comment
+      changes:
+      - createTable:
+            tableName:  location
+            columns:
+              - column:
+                  name:  id
+                  type:  int
+                  autoIncrement:  true
+                  constraints:
+                    primaryKey:  true
+                    nullable:  false
+              - column:
+                  name:  name
+                  type:  varchar(50)
+                  constraints:
+                    nullable:  false
+              - column:
+                  name:  winning_characteristic_id
+                  type:  int
+                  constraints:
+                    nullable: false
+                    primaryKey: false
+                    unique: false
+                    foreignKeyName: location_FK_characteristic
+                    references: characteristic(id)
+  - changeSet:
+      id:  "game-type-create"
+      author:  karthick
+      labels: example-label
+      context: example-context
+      comment: example-comment
+      changes:
+       - createTable:
+            tableName:  game_type
+            columns:
+              - column:
+                  name:  id
+                  type:  int
+                  autoIncrement:  true
+                  constraints:
+                    primaryKey:  true
+                    nullable:  false
+              - column:
+                  name:  name
+                  type:  varchar(50)
+                  constraints:
+                    nullable:  false
+              - column:
+                  name:  winning_characteristic_id
+                  type:  int
+                  constraints:
+                    nullable: false
+                    primaryKey: false
+                    unique: false
+                    foreignKeyName: game_type_FK_characteristic
+                    references: characteristic(id)
+                    
+  

@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: "BATCH_STEP_EXECUTION_SEQ"
+      author: "Karthick"
+      context: "Sequences"
+      labels: "Sequences"
+      changes:
+        - createSequence:
+            sequenceName: BATCH_STEP_EXECUTION_SEQ
+            startValue: 1
+            incrementBy: 1
+            maxValue: 100000
+            minValue: 0
+            ordered: true
+            cacheSize: 1
+            dataType: "INTEGER"
+  
+  - changeSet:
+      id: "BATCH_JOB_EXECUTION_SEQ"
+      author: "Karthick"
+      context: "Sequences"
+      labels: "Sequences"
+      changes:
+        - createSequence:
+            sequenceName: BATCH_JOB_EXECUTION_SEQ
+            startValue: 1
+            incrementBy: 1
+            maxValue: 100000
+            minValue: 0
+            ordered: true
+            cacheSize: 1
+            dataType: "INTEGER"
+  
+  - changeSet:
+      id: "BATCH_JOB_SEQ"
+      author: "Karthick"
+      context: "Sequences"
+      labels: "Sequences"
+      changes:
+        - createSequence:
+            sequenceName: BATCH_JOB_SEQ
+            startValue: 1
+            incrementBy: 1
+            maxValue: 100000
+            minValue: 0
+            ordered: true
+            cacheSize: 1
+            dataType: "INTEGER"
+ 

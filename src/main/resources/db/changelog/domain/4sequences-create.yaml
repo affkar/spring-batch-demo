@@ -1,0 +1,108 @@
+databaseChangeLog:
+  - changeSet:
+      id: "characteristic_Id_Sequence"
+      author: "Karthick"
+      context: "Sequences"
+      labels: "Sequences"
+      changes:
+        - createSequence:
+            sequenceName: characteristic_Id_Sequence
+            startValue: 1
+            incrementBy: 1
+            maxValue: 100000
+            minValue: 0
+            ordered: true
+            cacheSize: 1
+            dataType: "INTEGER"
+  - changeSet:
+      id: "Location_Id_Sequence"
+      author: "Karthick"
+      context: "Sequences"
+      labels: "Sequences"
+      changes:
+        - createSequence:
+            sequenceName: Location_Id_Sequence
+            startValue: 1
+            incrementBy: 1
+            maxValue: 100000
+            minValue: 0
+            ordered: true
+            cacheSize: 1
+            dataType: "INTEGER"
+  - changeSet:
+      id: "game_type_Id_Sequence"
+      author: "Karthick"
+      context: "Sequences"
+      labels: "Sequences"
+      changes:
+        - createSequence:
+            sequenceName: game_type_Id_Sequence
+            startValue: 1
+            incrementBy: 1
+            maxValue: 100000
+            minValue: 0
+            ordered: true
+            cacheSize: 1
+            dataType: "INTEGER"
+  
+  - changeSet:
+      id: "Player_Id_Sequence"
+      author: "Karthick"
+      context: "Sequences"
+      labels: "Sequences"
+      changes:
+        - createSequence:
+            sequenceName: Player_Id_Sequence
+            startValue: 1
+            incrementBy: 1
+            maxValue: 1000000000000
+            minValue: 0
+            ordered: true
+            cacheSize: 1
+            dataType: "BIGINT"
+  
+  - changeSet:
+      id: "player_characteristic_Id_Sequence"
+      author: "Karthick"
+      context: "Sequences"
+      labels: "Sequences"
+      changes:
+        - createSequence:
+            sequenceName: player_characteristic_Id_Sequence
+            startValue: 1
+            incrementBy: 1
+            maxValue: 100000
+            minValue: 0
+            ordered: true
+            cacheSize: 1
+            dataType: "INTEGER"
+  - changeSet:
+      id: "game_status_Id_Sequence"
+      author: "Karthick"
+      context: "Sequences"
+      labels: "Sequences"
+      changes:
+        - createSequence:
+            sequenceName: game_status_Id_Sequence
+            startValue: 1
+            incrementBy: 1
+            maxValue: 100000
+            minValue: 0
+            ordered: true
+            cacheSize: 1
+            dataType: "INTEGER" 
+  - changeSet:
+      id: "game_Id_Sequence"
+      author: "Karthick"
+      context: "Sequences"
+      labels: "Sequences"
+      changes:
+        - createSequence:
+            sequenceName: game_Id_Sequence
+            startValue: 1
+            incrementBy: 1
+            maxValue: 100000
+            minValue: 0
+            ordered: true
+            cacheSize: 1
+            dataType: "INTEGER"

@@ -1,0 +1,72 @@
+databaseChangeLog:
+  - changeSet:
+      id: "game-status-create"
+      author: Karthick
+      context: example-context
+      labels: example-label
+      changes:
+       - createTable:
+          tableName: game_status
+          columns:
+            - column:
+                name:  id
+                type:  int
+                autoIncrement:  true
+                constraints:
+                  primaryKey:  true
+                  nullable:  false
+            - column:
+                name:  status
+                type:  varchar(25)
+                constraints:
+                  nullable:  false  
+  
+  
+  - changeSet:
+      id: "game-create"
+      author: Karthick
+      context: example-context
+      labels: example-label
+      changes:
+       - createTable:
+          tableName: game
+          columns:
+            - column:
+                name:  id
+                type:  int
+                autoIncrement:  true
+                constraints:
+                  primaryKey:  true
+                  nullable:  false
+            - column:
+                name:  type_id
+                type:  int
+                constraints:
+                  foreignKeyName: game_fk_game_type_id
+                  referencedTableName:  game_type
+                  referencedColumnNames: id
+            - column:
+                  name:  location_id
+                  type:  int
+                  constraints:
+                    nullable: false
+                    primaryKey: false
+                    unique: false
+                    foreignKeyName: game_FK_location
+                    references: location(id)
+            - column:
+                name:  game_status_id
+                type:  int
+                constraints:
+                  foreignKeyName: game_fk_game_status_id
+                  referencedTableName:  game_status
+                  referencedColumnNames: id
+            - column:
+                name:  winning_player_id
+                type:  int
+                constraints:
+                  foreignKeyName: game_fk_player_id
+                  referencedTableName:  player
+                  referencedColumnNames: id
+
+                  
