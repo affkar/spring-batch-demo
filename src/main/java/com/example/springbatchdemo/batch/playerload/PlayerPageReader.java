@@ -6,14 +6,14 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoField;
 
-import org.springframework.batch.item.ExecutionContext;
-import org.springframework.batch.item.ItemStreamException;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.batch.item.support.AbstractItemStreamItemReader;
 import org.springframework.stereotype.Service;
 
+import com.example.springbatchdemo.batch.common.JobExecutionContextHolder;
+import com.example.springbatchdemo.batch.common.JobParamsHolder;
 import com.example.springbatchdemo.model.PlayerPages;
 import com.example.springbatchdemo.restclient.PlayerClient;
 
@@ -27,18 +27,12 @@ public class PlayerPageReader extends AbstractItemStreamItemReader<PlayerPages> 
 
     private final PlayerClient playerClient;
     private final JobParamsHolder jobParamsHolder;
-    private ExecutionContext executionContext;
-
-    @Override
-    public void open(ExecutionContext executionContext) throws ItemStreamException {
-        this.executionContext = executionContext;
-        setExecutionContextName("PlayerPage");
-    }
+    private final JobExecutionContextHolder jobExecutionContextHolder;
 
     @Override
     public PlayerPages read()
             throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-        final long totalPagesFromContext = executionContext.getLong(getExecutionContextKey("TOTALPAGES"), -1);
+        final long totalPagesFromContext = jobExecutionContextHolder.getExecutionContext().getLong("TOTALPAGES", -1);
         if (totalPagesFromContext == -1) {
             final ZonedDateTime localDate = jobParamsHolder.getJobParams().getLocalDate("queryDate",
                     LocalDate.now()).atStartOfDay(ZoneId.systemDefault());
@@ -49,7 +43,7 @@ public class PlayerPageReader extends AbstractItemStreamItemReader<PlayerPages> 
 
             final PlayerPages playerPages = playerClient.getPlayerPages(
                     Instant.ofEpochSecond(queryDateSecondsSinceEpoch));
-            executionContext.putLong(getExecutionContextKey("TOTALPAGES"), playerPages.getCount());
+            jobExecutionContextHolder.getExecutionContext().putLong("TOTALPAGES", playerPages.getCount());
             return playerPages;
         } else {
             return null;

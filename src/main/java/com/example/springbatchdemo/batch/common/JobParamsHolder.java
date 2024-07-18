@@ -1,4 +1,4 @@
-package com.example.springbatchdemo.batch.playerload;
+package com.example.springbatchdemo.batch.common;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;

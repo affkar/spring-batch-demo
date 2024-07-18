@@ -24,51 +24,53 @@ import jakarta.persistence.EntityManagerFactory;
 @Configuration
 public class PlayerLoadBatchConfig {
 
-    @Bean
-    public Job playerDataLoadBatchJob(JobRepository jobRepository, Step playerPageLoad,
-            Step playerLoad,
-            JobExecutionListener jobParamsHolder) {
-        return new JobBuilder("PlayerLoadBatchJob", jobRepository)
-                .listener(jobParamsHolder)
-                // .validator(jobParametersValidator())
-                .start(playerPageLoad)
-                .next(playerLoad)
-                .build();
-    }
+        @Bean
+        public Job playerDataLoadBatchJob(JobRepository jobRepository, Step playerPageLoad,
+                        Step playerLoad,
+                        JobExecutionListener jobParamsHolder,
+                        JobExecutionListener jobExecutionContextHolder) {
+                return new JobBuilder("PlayerLoadBatchJob", jobRepository)
+                                .listener(jobParamsHolder)
+                                .listener(jobExecutionContextHolder)
+                                // .validator(jobParametersValidator())
+                                .start(playerPageLoad)
+                                .next(playerLoad)
+                                .build();
+        }
 
-    @Bean
-    public Step playerPageLoad(JobRepository jobRepository,
-            PlatformTransactionManager platformTransactionManager,
-            ItemReader<PlayerPages> playerPageReader) {
-        return new StepBuilder("playerPageLoad", jobRepository)
-                .<PlayerPages, PlayerPages>chunk(1, platformTransactionManager)
-                .reader(playerPageReader)
-                .writer((playerPages) -> {
-                })
-                .build();
-    }
+        @Bean
+        public Step playerPageLoad(JobRepository jobRepository,
+                        PlatformTransactionManager platformTransactionManager,
+                        ItemReader<PlayerPages> playerPageReader) {
+                return new StepBuilder("playerPageLoad", jobRepository)
+                                .<PlayerPages, PlayerPages>chunk(1, platformTransactionManager)
+                                .reader(playerPageReader)
+                                .writer((playerPages) -> {
+                                })
+                                .build();
+        }
 
-    @Bean
-    public Step playerLoad(JobRepository jobRepository,
-            PlatformTransactionManager platformTransactionManager,
-            ItemReader<Player> playerReader, PlayerMapper playerMapper,
-            ItemWriter<PlayerE> playersCompositeWriter) {
-        return new StepBuilder("playerLoad", jobRepository)
-                .<Player, PlayerE>chunk(500, platformTransactionManager)
-                .reader(playerReader)
-                .processor((p) -> playerMapper.map(p))
-                .writer(playersCompositeWriter)
-                .build();
-    }
+        @Bean
+        public Step playerLoad(JobRepository jobRepository,
+                        PlatformTransactionManager platformTransactionManager,
+                        ItemReader<Player> playerReader, PlayerMapper playerMapper,
+                        ItemWriter<PlayerE> playersCompositeWriter) {
+                return new StepBuilder("playerLoad", jobRepository)
+                                .<Player, PlayerE>chunk(500, platformTransactionManager)
+                                .reader(playerReader)
+                                .processor((p) -> playerMapper.map(p))
+                                .writer(playersCompositeWriter)
+                                .build();
+        }
 
-    @Bean
-    public ItemWriter<PlayerE> playersCompositeWriter(final EntityManagerFactory entityManagerFactory,
-            ItemWriter<PlayerE> playersWriter) {
-        return new CompositeItemWriterBuilder<PlayerE>().delegates(
-                new JpaItemWriterBuilder<PlayerE>()
-                        .entityManagerFactory(entityManagerFactory)
-                        .build(),
-                playersWriter).build();
-    }
+        @Bean
+        public ItemWriter<PlayerE> playersCompositeWriter(final EntityManagerFactory entityManagerFactory,
+                        ItemWriter<PlayerE> playersWriter) {
+                return new CompositeItemWriterBuilder<PlayerE>().delegates(
+                                new JpaItemWriterBuilder<PlayerE>()
+                                                .entityManagerFactory(entityManagerFactory)
+                                                .build(),
+                                playersWriter).build();
+        }
 
 }

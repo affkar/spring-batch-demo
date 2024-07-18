@@ -9,20 +9,17 @@ import org.springframework.stereotype.Service;
 import com.example.springbatchdemo.entity.PlayerE;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class PlayersWriter extends AbstractItemStreamItemWriter<PlayerE> {
 
-    private final JobParamsHolder jobParamsHolder;
     private ExecutionContext executionContext;
 
     @Override
     public void open(ExecutionContext executionContext) throws ItemStreamException {
         this.executionContext = executionContext;
-        setExecutionContextName("PlayerPage");
+        setExecutionContextName("PlayerLoad");
     }
 
     @Override

@@ -10,33 +10,31 @@ import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.batch.item.support.AbstractItemStreamItemReader;
 import org.springframework.stereotype.Service;
 
+import com.example.springbatchdemo.batch.common.JobExecutionContextHolder;
 import com.example.springbatchdemo.model.Player;
 import com.example.springbatchdemo.restclient.PlayerClient;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class PlayerReader extends AbstractItemStreamItemReader<Player> {
 
     private final PlayerClient playerClient;
-    private final JobParamsHolder jobParamsHolder;
     private ExecutionContext executionContext;
-    private long currentPage;
+    private final JobExecutionContextHolder jobExecutionContextHolder;
     private Iterator<Player> players;
 
     @Override
     public void open(ExecutionContext executionContext) throws ItemStreamException {
         this.executionContext = executionContext;
-        setExecutionContextName("PlayerPage");
+        setExecutionContextName("PlayerLoad");
     }
 
     @Override
     public Player read()
             throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-        final long totalPagesFromContext = executionContext.getLong(getExecutionContextKey("TOTALPAGES"), -1);
+        final long totalPagesFromContext = jobExecutionContextHolder.getExecutionContext().getLong("TOTALPAGES");
         final long pagesCompletedFromContext = executionContext.getLong(getExecutionContextKey("PAGESCOMPLETED"), 0);
         final long currentPageFromContext = executionContext.getLong(getExecutionContextKey("CURRENTPAGE"),
                 pagesCompletedFromContext);
