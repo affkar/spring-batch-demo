@@ -10,6 +10,7 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -33,7 +34,7 @@ public class ReferenceDataLoadBatchConfig {
 
     @Bean
     public Step characteristicLoad(JobRepository jobRepository,
-            PlatformTransactionManager platformTransactionManager,
+            @Qualifier("springCloudTaskTransactionManager") PlatformTransactionManager platformTransactionManager,
             ItemReader<Character> characterReader, ItemProcessor<Character, CharacterE> characterTransformer,
             ItemWriter<CharacterE> characterJpaItemWriter) {
         return new StepBuilder("characteristicLoad", jobRepository)

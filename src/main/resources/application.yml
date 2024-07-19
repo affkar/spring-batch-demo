@@ -17,3 +17,10 @@ spring:
       path: /h2-console
   liquibase:
     enabled: true
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          task: DEBUG
