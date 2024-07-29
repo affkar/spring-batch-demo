@@ -14,7 +14,6 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.support.builder.CompositeItemWriterBuilder;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -59,7 +58,7 @@ public class PlayerLoadBatchConfig {
 
         @Bean
         public Step playerPageLoad(JobRepository jobRepository,
-                        @Qualifier("springCloudTaskTransactionManager") PlatformTransactionManager platformTransactionManager,
+                        PlatformTransactionManager platformTransactionManager,
                         ItemReader<PlayerPages> playerPageReader) {
                 return new StepBuilder("playerPageLoad", jobRepository)
                                 .<PlayerPages, PlayerPages>chunk(1, platformTransactionManager)
@@ -71,7 +70,7 @@ public class PlayerLoadBatchConfig {
 
         @Bean
         public Step playerLoad(JobRepository jobRepository,
-                        @Qualifier("springCloudTaskTransactionManager") PlatformTransactionManager platformTransactionManager,
+                        PlatformTransactionManager platformTransactionManager,
                         ItemReader<Player> playerReader, PlayerMapper playerMapper,
                         ItemWriter<PlayerE> playersCompositeWriter) {
                 return new StepBuilder("playerLoad", jobRepository)
