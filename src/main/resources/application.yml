@@ -11,12 +11,15 @@ spring:
       password:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+  # h2:
+  #   console:
+  #     enabled: true
+  #     path: /h2-console
   liquibase:
     enabled: true
+  batch:
+    job:
+      enabled: false
 
 logging:
   level:
@@ -24,3 +27,5 @@ logging:
       springframework:
         cloud:
           task: DEBUG
+# server:
+#   port: 8090

@@ -33,6 +33,7 @@ public class PlayerPageReader extends AbstractItemStreamItemReader<PlayerPages> 
     @Override
     public PlayerPages read()
             throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+        log.trace("In PlayerPageReader.read");
         final long totalPagesFromContext = jobExecutionContextHolder.getExecutionContext().getLong("TOTALPAGES", -1);
         if (totalPagesFromContext == -1) {
             final ZonedDateTime queryDate = Optional.ofNullable(jobParamsHolder.getJobParams().getString("queryDate"))

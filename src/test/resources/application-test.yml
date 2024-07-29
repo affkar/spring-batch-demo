@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:test1
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+  batch:
+    job:
+      enabled: false
+  main:
+    allow-bean-definition-overriding: true
+logging:
+  level:
+    org:
+      mockserver:
+        log:
+          MockServerEventLog: WARN
